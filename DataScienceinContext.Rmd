@@ -1,0 +1,95 @@
+---
+title: "RColorBrewer Package"
+author: "Devin Teran"
+output: rmdformats::material
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(RColorBrewer)
+library(MASS)
+
+```
+# Designing Graphs for User Accessibility
+## What is Color Blindess?  
+
+* Color blindness is when people **can't distinguish colors**  
+* Affects approximately **8%** of population of men, **0.5%** of women  
+* Issues distinguishing **red** & **green** is most common  
+
+![](trafficlight.jpeg)   
+
+## Color Brewer Online   
+[https://colorbrewer2.org](https://colorbrewer2.org)  
+![](ColorBrewer.png)      
+
+## RColorBrewer Package  
+
+**display.brewer.all(n,type,colorblindFriendly)**  
+
+**Input:**  
+
+* **n** - number of colors you want
+* **type** - type of data (qual for qualitative,seq for sequential,or div for diverging)
+* **colorblindFriendly** - TRUE or FALSE (set TRUE to return color blind friendly colors)
+
+**Output:**  
+
+* Visual representation of available colors. Each set has a name, which can be called in code.
+```{r display.brewer.all-example}
+display.brewer.all(n=4,type='div',colorblindFriendly=TRUE)
+```
+
+**brewer.pal(n,name)**  
+**Input:**  
+
+* **n** - number of colors you want
+* **name** - name of color palette, which can be found using display.brewer.all()  
+  
+**Output:**
+
+* Hex color codes
+```{r brewer.pal-example}
+brewer.pal(3,"Dark2")
+```
+
+### Qualitative Data    
+#### Color Blind Friendly Options    
+```{r qualitative-color-options}
+display.brewer.all(n=NULL,type='qual', colorblindFriendly=TRUE)
+```    
+  
+#### Graph   
+```{r qualitative-scatterplot }
+ggplot(painters, aes(x=School, fill=School)) + 
+  geom_bar() +
+  ggtitle("Count of Famous Painters that Attended Each School") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_fill_brewer(palette="Dark2")
+```
+
+### Sequential Example    
+#### Color Blind Friendly Options     
+```{r sequential-color-options}
+display.brewer.all(n=NULL,type='seq',colorblindFriendly=TRUE)
+```  
+  
+#### Graph  
+```{r sequential-scatterplot}
+ggplot(diamonds, aes(x=carat, y=price, color=cut)) +
+  geom_point() +
+  ggtitle("Diamond Quality - Size, Cut, Price") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_color_brewer(palette='YlOrRd')
+  
+```
+
+
+### Resources  
+
+*[https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf](https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)  
+*[https://colormax.org/resources/types-of-colorblindness/#close](https://colormax.org/resources/types-of-colorblindness/#close)  
+*[https://www.reed.edu/data-at-reed/resources/R/colors.html](https://www.reed.edu/data-at-reed/resources/R/colors.html)  
+*[https://www.bloglovin.com/blogs/bored-panda-7181743/youll-be-amazed-how-people-with-color-blindness-5408746899](https://www.bloglovin.com/blogs/bored-panda-7181743/youll-be-amazed-how-people-with-color-blindness-5408746899)
+
+
